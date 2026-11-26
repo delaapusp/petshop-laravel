@@ -47,16 +47,33 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        //
+        
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        //update
+        $request -> validate(
+        [
+            'nama_barang' => 'required',
+            'harga' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'deskripsi' => 'required'
+        ]
+        );
+        //cari produk berdasarkan id
+        $product = \App\Models\Product::findOrFail($id);
+        //update
+        $product->update($request->all());
+        return redirect()->route('products.index')->with('succes','barang berhasil diupdate');
     }
 
     public function destroy(string $id)
     {
-        //
+        //HAPUS DATA BERDASARKAN ID
+        $product = \App\Models\Product::FindOrFail($id);
+        $product->delete();
+        return redirect()->route('products.index')->with('succes','barang berhasil dihapus');
+
     }
 }
